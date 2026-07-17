@@ -8,13 +8,13 @@ document.addEventListener('DOMContentLoaded', () => {
   const uiuxSlidesCount = 7;
   
   const uiuxScreens = [
-    { img: 'images/main.png', name: '홈 화면' },
-    { img: 'images/search.png', name: '검색 화면' },
-    { img: 'images/cart.png', name: '장바구니' },
-    { img: 'images/checkout.png', name: '결제 화면' },
-    { img: 'images/mypage.png', name: '마이페이지' },
-    { img: 'images/clip.png', name: 'Clip (커뮤니티)' },
-    { img: 'images/clip2.png', name: 'Clip (상세 보기)' }
+    { img: 'images/Main.png', name: '홈 화면' },
+    { img: 'images/Search.png', name: '검색 화면' },
+    { img: 'images/Cart.png', name: '장바구니' },
+    { img: 'images/Checkout.png', name: '결제 화면' },
+    { img: 'images/Mypage.png', name: '마이페이지' },
+    { img: 'images/Clip.png', name: 'Clip (커뮤니티)' },
+    { img: 'images/Clip2.png', name: 'Clip (상세 보기)' }
   ];
 
   function startUiuxTimer() {
