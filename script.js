@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
     uiuxTimer = setInterval(() => {
       currentUiuxIndex = (currentUiuxIndex + 1) % uiuxSlidesCount;
       updateUiuxSlide();
-    }, 5000);
+    }, 2000);
   }
 
   function stopUiuxTimer() {
@@ -100,7 +100,7 @@ document.addEventListener('DOMContentLoaded', () => {
     jiguTimer = setInterval(() => {
       currentJiguIndex = (currentJiguIndex + 1) % jiguSlidesCount;
       updateJiguSlide();
-    }, 5000);
+    }, 2000);
   }
 
   function stopJiguTimer() {
