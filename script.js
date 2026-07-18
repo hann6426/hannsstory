@@ -312,6 +312,15 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  if (portfolioModal) {
+    portfolioModal.addEventListener('click', (e) => {
+      if (e.target === portfolioModal) {
+        portfolioModal.classList.remove('active');
+        document.body.style.overflow = ''; 
+      }
+    });
+  }
+
   const projectImgBoxes = document.querySelectorAll('.project-img-box');
   let clickedBox = null; 
 
