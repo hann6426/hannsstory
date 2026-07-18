@@ -47,9 +47,11 @@ document.addEventListener('DOMContentLoaded', () => {
       fill.style.width = `${percentage}%`;
     }
     
+    // 안전성 개선: DOM 인덱스가 아닌 data-index 속성 기반 제어
     const descs = document.querySelectorAll('.uiux-section:not(.jigu-section) .uiux-slide-desc');
-    descs.forEach((desc, idx) => {
-      if (idx === currentUiuxIndex) {
+    descs.forEach((desc) => {
+      const dataIdx = parseInt(desc.getAttribute('data-index'), 10);
+      if (dataIdx === currentUiuxIndex) {
         desc.classList.add('active');
       } else {
         desc.classList.remove('active');
@@ -123,9 +125,11 @@ document.addEventListener('DOMContentLoaded', () => {
       fill.style.width = `${percentage}%`;
     }
     
+    // 안전성 개선: DOM 인덱스가 아닌 data-index 속성 기반 제어
     const descs = document.querySelectorAll('.jigu-section .uiux-slide-desc');
-    descs.forEach((desc, idx) => {
-      if (idx === currentJiguIndex) {
+    descs.forEach((desc) => {
+      const dataIdx = parseInt(desc.getAttribute('data-index'), 10);
+      if (dataIdx === currentJiguIndex) {
         desc.classList.add('active');
       } else {
         desc.classList.remove('active');
@@ -166,7 +170,6 @@ document.addEventListener('DOMContentLoaded', () => {
       const targetText = item.getAttribute('data-text');
 
       if (targetText === 'PLANNING') {
-        // PLANNING 메뉴는 외부 링크 이동이므로 기본 동작을 차단하지 않습니다.
         return;
       }
 
@@ -194,10 +197,10 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // SPA 전환 공통 헬퍼 함수
   function activateUiuxPage() {
     mainSections.forEach(sec => sec.classList.add('d-none'));
     uiuxSections.forEach(sec => sec.classList.remove('d-none'));
+    // 페이지 활성화 시 안전하게 초기화 및 타이머 작동
     goToUiuxSlide(0); 
     goToJiguSlide(0); 
   }
@@ -224,43 +227,37 @@ document.addEventListener('DOMContentLoaded', () => {
   // ✅ 1-2. 교차 페이지 이동 전용 트리거 연동 로직
   // ==========================================
   
-  // 1-2-A. 지구식탁 UI/UX 디자인 보기 트리거 (컴퓨터 화면)
   const jiguUiuxTriggers = document.querySelectorAll('.jigu-uiux-trigger');
   jiguUiuxTriggers.forEach(trigger => {
     trigger.addEventListener('click', (e) => {
       e.preventDefault();
       
-      // 네비게이션 액티브 상태 전환
       navItems.forEach(nav => nav.classList.remove('active'));
       const uiuxMenu = document.querySelector('.nav-item[data-text="UI/UX DESIGN"]');
       if (uiuxMenu) uiuxMenu.classList.add('active');
 
       activateUiuxPage();
 
-      // 지구식탁 컴퓨터 영역(.jigu-section)으로 자연스러운 스크롤
       const jiguSection = document.querySelector('.jigu-section');
       if (jiguSection) {
         setTimeout(() => {
           scrollToSection(jiguSection);
-        }, 50); // 화면이 가려진 상태에서 처리될 수 있도록 마이크로 딜레이 부여
+        }, 50);
       }
     });
   });
 
-  // 1-2-B. CIRQA UI/UX 디자인 보기 트리거 (모바일 화면)
   const cirqaUiuxTriggers = document.querySelectorAll('.cirqa-uiux-trigger');
   cirqaUiuxTriggers.forEach(trigger => {
     trigger.addEventListener('click', (e) => {
       e.preventDefault();
       
-      // 네비게이션 액티브 상태 전환
       navItems.forEach(nav => nav.classList.remove('active'));
       const uiuxMenu = document.querySelector('.nav-item[data-text="UI/UX DESIGN"]');
       if (uiuxMenu) uiuxMenu.classList.add('active');
 
       activateUiuxPage();
 
-      // CIRQA 모바일 영역으로 자연스러운 스크롤
       const cirqaSection = document.querySelector('.uiux-section:not(.jigu-section)');
       if (cirqaSection) {
         setTimeout(() => {
@@ -270,7 +267,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // 1-2-C. INTRO 내 빠른 이동 버튼들 제어
   const quickBtnProject = document.getElementById('quickBtnProject');
   if (quickBtnProject) {
     quickBtnProject.addEventListener('click', () => {
@@ -289,6 +285,8 @@ document.addEventListener('DOMContentLoaded', () => {
     quickBtnSns.addEventListener('click', () => {
       deactivateUiuxPage();
       navItems.forEach(nav => nav.classList.remove('active'));
+      const projectNav = document.querySelector('.nav-item[data-text="PROJECT"]'); // 포커스 보정
+      if (projectNav) projectNav.classList.add('active');
       
       const snsSection = document.querySelector('.sns-section');
       if (snsSection) scrollToSection(snsSection);
@@ -307,16 +305,16 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-
-  // 2. 헤더 및 푸터 로고 클릭 시 페이지 최상단(메인)으로 새로고침
   const logoElements = document.querySelectorAll('.logo-area img, .footer-logo img');
   logoElements.forEach(logo => {
-    logo.addEventListener('click', (e) => {
+    logo.addEventListener('click', () => {
       window.location.href = window.location.pathname; 
     });
   });
 
-  // 3. 포트폴리오 구성 보기 모달 온/오프 인터랙션 로직
+  // ==========================================
+  // ✅ 3. 포트폴리오 구성 보기 모달 인터랙션
+  // ==========================================
   const headerButton = document.querySelector('.button-area img');
   const portfolioModal = document.getElementById('portfolioModal');
   const modalCloseBtn = document.getElementById('modalCloseBtn');
@@ -335,7 +333,9 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // 4. 프로젝트 카드 호버 및 클릭 제어 로직
+  // ==========================================
+  // ✅ 4. 프로젝트 카드 호버 및 클릭 제어 로직
+  // ==========================================
   const projectImgBoxes = document.querySelectorAll('.project-img-box');
   let clickedBox = null; 
 
@@ -375,13 +375,22 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // 5. SNS 카드 뉴스 무한 루프 애니메이션 및 5초 게이지 연동 로직
+  // ==========================================
+  // ✅ 5. SNS 카드 뉴스 무한 루프 애니메이션 및 5초 게이지 연동 로직
+  // ==========================================
   const gaugeFill = document.querySelector('.sns-gauge-fill');
   const cardTrack = document.querySelector('.sns-card-track');
   const cardWidthWithGap = 343.5; 
+  let snsTimeout1 = null;
+  let snsTimeout2 = null;
 
   function runSnsCarouselLoop() {
     if (!gaugeFill || !cardTrack) return; 
+    
+    // 타임아웃 초기화 (안전장치)
+    clearTimeout(snsTimeout1);
+    clearTimeout(snsTimeout2);
+
     gaugeFill.style.transition = 'none';
     gaugeFill.style.width = '0%';
     void gaugeFill.offsetWidth; 
@@ -389,7 +398,7 @@ document.addEventListener('DOMContentLoaded', () => {
     gaugeFill.style.transition = 'width 5s linear';
     gaugeFill.style.width = '100%';
 
-    setTimeout(() => {
+    snsTimeout1 = setTimeout(() => {
       const firstCard = cardTrack.firstElementChild;
       if (!firstCard) return;
       const clone = firstCard.cloneNode(true);
@@ -398,8 +407,8 @@ document.addEventListener('DOMContentLoaded', () => {
       cardTrack.style.transition = 'transform 0.5s ease';
       cardTrack.style.transform = `translateX(-${cardWidthWithGap}px)`;
 
-      setTimeout(() => {
-        cardTrack.removeChild(clone);
+      snsTimeout2 = setTimeout(() => {
+        if (cardTrack.contains(clone)) cardTrack.removeChild(clone);
         cardTrack.appendChild(firstCard); 
         
         cardTrack.style.transition = 'none';
@@ -417,7 +426,9 @@ document.addEventListener('DOMContentLoaded', () => {
     runSnsCarouselLoop();
   }
 
-  // 6. SNS 카드 클릭 시 모달창(오버레이) 라이트박스 구동 로직
+  // ==========================================
+  // ✅ 6. SNS 카드 클릭 시 모달창(오버레이) 라이트박스 구동
+  // ==========================================
   const snsCardModal = document.getElementById('snsCardModal');
   const snsModalImg = document.getElementById('snsModalImg');
   const snsModalTitle = document.getElementById('snsModalTitle');
