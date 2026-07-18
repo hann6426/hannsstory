@@ -1,8 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
 
-  // ==========================================
-  // ✅ 0. UI/UX DESIGN 슬라이더 및 자동 전환 제어 핵심 변수 (Cirqa - 모바일)
-  // ==========================================
   let uiuxTimer = null;
   let currentUiuxIndex = 0;
   const uiuxSlidesCount = 7;
@@ -47,7 +44,6 @@ document.addEventListener('DOMContentLoaded', () => {
       fill.style.width = `${percentage}%`;
     }
     
-    // 안전성 개선: DOM 인덱스가 아닌 data-index 속성 기반 제어
     const descs = document.querySelectorAll('.uiux-section:not(.jigu-section) .uiux-slide-desc');
     descs.forEach((desc) => {
       const dataIdx = parseInt(desc.getAttribute('data-index'), 10);
@@ -79,10 +75,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-
-  // ==========================================
-  // ✅ 0-2. UI/UX DESIGN 슬라이더 및 자동 전환 제어 핵심 변수 (지구식탁 - 데스크톱)
-  // ==========================================
   let jiguTimer = null;
   let currentJiguIndex = 0;
   const jiguSlidesCount = 5;
@@ -125,7 +117,6 @@ document.addEventListener('DOMContentLoaded', () => {
       fill.style.width = `${percentage}%`;
     }
     
-    // 안전성 개선: DOM 인덱스가 아닌 data-index 속성 기반 제어
     const descs = document.querySelectorAll('.jigu-section .uiux-slide-desc');
     descs.forEach((desc) => {
       const dataIdx = parseInt(desc.getAttribute('data-index'), 10);
@@ -157,10 +148,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-
-  // ==========================================
-  // ✅ 1. 네비게이션 메뉴 클릭 - SPA 전환 로직
-  // ==========================================
   const navItems = document.querySelectorAll('.nav-item');
   const mainSections = document.querySelectorAll('.intro-section, .resume-section, .project-section, .sns-section');
   const uiuxSections = document.querySelectorAll('.uiux-section'); 
@@ -200,7 +187,6 @@ document.addEventListener('DOMContentLoaded', () => {
   function activateUiuxPage() {
     mainSections.forEach(sec => sec.classList.add('d-none'));
     uiuxSections.forEach(sec => sec.classList.remove('d-none'));
-    // 페이지 활성화 시 안전하게 초기화 및 타이머 작동
     goToUiuxSlide(0); 
     goToJiguSlide(0); 
   }
@@ -223,10 +209,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // ==========================================
-  // ✅ 1-2. 교차 페이지 이동 전용 트리거 연동 로직
-  // ==========================================
-  
   const jiguUiuxTriggers = document.querySelectorAll('.jigu-uiux-trigger');
   jiguUiuxTriggers.forEach(trigger => {
     trigger.addEventListener('click', (e) => {
@@ -312,9 +294,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // ==========================================
-  // ✅ 3. 포트폴리오 구성 보기 모달 인터랙션
-  // ==========================================
   const headerButton = document.querySelector('.button-area img');
   const portfolioModal = document.getElementById('portfolioModal');
   const modalCloseBtn = document.getElementById('modalCloseBtn');
@@ -333,9 +312,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // ==========================================
-  // ✅ 4. 프로젝트 카드 호버 및 클릭 제어 로직
-  // ==========================================
   const projectImgBoxes = document.querySelectorAll('.project-img-box');
   let clickedBox = null; 
 
@@ -375,9 +351,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // ==========================================
-  // ✅ 5. SNS 카드 뉴스 무한 루프 애니메이션 및 5초 게이지 연동 로직
-  // ==========================================
   const gaugeFill = document.querySelector('.sns-gauge-fill');
   const cardTrack = document.querySelector('.sns-card-track');
   const cardWidthWithGap = 343.5; 
@@ -426,9 +399,6 @@ document.addEventListener('DOMContentLoaded', () => {
     runSnsCarouselLoop();
   }
 
-  // ==========================================
-  // ✅ 6. SNS 카드 클릭 시 모달창(오버레이) 라이트박스 구동
-  // ==========================================
   const snsCardModal = document.getElementById('snsCardModal');
   const snsModalImg = document.getElementById('snsModalImg');
   const snsModalTitle = document.getElementById('snsModalTitle');
